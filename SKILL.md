@@ -1,69 +1,66 @@
 ---
 name: "ironclaw-hackathon"
-description: "Official skill for NEAR Legion Skill-a-thon series. Register competing agents and request temporary NEAR AI Cloud credits."
-version: "1.0.0"
+description: "Official skill for NEAR Legion Skill-a-thon series. Register your agent and request temporary NEAR AI Cloud credits."
+version: "0.1.0"
 author: "Julien Carbonnell (NEAR Legion Barcelona)"
-tags: ["hackathon", "competition", "registration"]
+tags: ["hackathon", "competition", "registration", "credits"]
 ---
 
-# IronClaw Hackathon Skill
+# ironclaw-hackathon
 
-This skill is the official entry point for all NEAR Legion Skill-a-thon events (Barcelona and future city nodes).
+Official skill for the NEAR Legion Skill-a-thon series (Barcelona and all future city nodes).
 
-It allows participants to register their agent centrally and request temporary credits so they don't need to top up their own NEAR AI Cloud account during the competition.
+It allows participants to register their IronClaw agent centrally and request temporary NEAR AI Cloud credits without needing to top up their own account.
 
 ## Available Methods
 
 ### 1. register_competing_agent
-Registers your IronClaw agent for the current Skill-a-thon.
+Register your agent for the current Skill-a-thon.
 
 **Parameters:**
-- `agent_id` (required): Your IronClaw instance ID or NEAR account
-- `github_repo` (required): Link to your public skill/workflow repository
-- `skills_list` (required): Comma-separated list of custom skills you built
-- `workflow_description` (required): One-sentence description of your main workflow (max 280 characters)
-- `participant_name` (required): Your name or @handle
-- `city_node` (optional): Default = "Barcelona"
+- `agent_id` (required) — your IronClaw agent ID or NEAR account
+- `github_repo` (required) — link to your public skills/workflows repo
+- `skills_list` (required) — comma-separated list of custom skills you built
+- `workflow_description` (required) — one-sentence description of your main workflow
+- `participant_name` (required) — your name or @handle
+- `city_node` (optional, default: "Barcelona")
 
-**Example usage:**
-skill_run ironclaw-hackathon register_competing_agent 
-  agent_id=my-agent-xyz 
-  github_repo=https://github.com/myname/my-awesome-skill 
-  skills_list="privacy-guard, data-scout, secure-outreach" 
-  workflow_description="Privacy-first autonomous BD agent that never leaks credentials" 
-  participant_name="Julien Carbonnell" 
-  city_node="Barcelona"
+**What the skill does:**
+1. Reads the current submissions file for this event.
+2. Appends a clean, readable entry using `memory_write`.
+3. Confirms registration to you.
 
 ### 2. request_credits
-Requests temporary NEAR AI Cloud credits for the duration of the hackathon.
+Request temporary NEAR AI Cloud credits for the hackathon duration.
 
 **Parameters:**
-- `credit_amount` (required): Number of credits needed (e.g. 5000)
-- `reason` (optional): Short justification
+- `credit_amount` (required) — e.g. 5000 or 8000
+- `reason` (optional)
 
-**Example:**
-skill_run ironclaw-hackathon request_credits credit_amount=10
+**What the skill does:**
+1. Logs your credit request to the shared submissions file.
+2. Notifies organizers/judges automatically.
 
-### 3. list_submissions (for judges/staff only)
-Lists all registered agents and their status.
+### 3. list_submissions (for judges & staff)
+Display all registered agents and credit requests for the current event.
 
-### 4. mark_credits_granted (for judges/staff only)
-Marks that credits have been manually granted by organizers.
+**What the skill does:**
+- Uses `memory_read` to show the full, up-to-date submissions markdown file.
 
 ---
 
-## How to Install This Skill (exactly as in your GitBook)
+## Installation (one-time, same as in the GitBook)
 
 ```bash
-# 1. Create directory
+# 1. Create the skill directory
 sudo mkdir -p /opt/ironclaw/.ironclaw/skills/ironclaw-hackathon
 
 # 2. Write the skill file
 sudo -u ironclaw tee /opt/ironclaw/.ironclaw/skills/ironclaw-hackathon/SKILL.md > /dev/null << 'EOF'
-[PASTE THE FULL SKILL.md CONTENT ABOVE]
+[PASTE THE ENTIRE CONTENT ABOVE HERE]
 EOF
 
-# 3. Fix ownership (critical!)
+# 3. Fix ownership (very important!)
 sudo chown -R ironclaw:ironclaw /opt/ironclaw/.ironclaw/skills/ironclaw-hackathon
 
 # 4. Verify
